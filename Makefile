@@ -23,6 +23,7 @@ requirements: requirements.txt
 clean:
 	find . -type f -name "*.py[co]" -delete
 	find . -type d -name "__pycache__" -delete
+	find . -maxdepth 1 -type d -name "*.egg-info"  -exec rm -r {} +
 
 ## Lint using flake8
 lint:
