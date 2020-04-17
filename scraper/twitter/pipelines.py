@@ -35,7 +35,6 @@ class DataGatherPipeline:
                 'user': 'user1',
                 'time_epoch': 123854343,
                 'tweet': 'Some text with/without links',
-                'is_retweet': True,
                 'n_likes': 10,
                 'n_retweets': 20,
                 'n_replies': 5,
@@ -49,10 +48,7 @@ class DataGatherPipeline:
                     'n_emojis': 0
                 },
                 'hashtags': ['hashtag1', 'hashtag2', 'hashtag3'],
-                'mentions': ['user3', 'user4'],
-                'retweet_info': {
-                    'screen_name': 'user2',
-                    'name': 'Full name'
+                'mentions': ['user3', 'user4']
             }
         """
 
@@ -61,40 +57,16 @@ class DataGatherPipeline:
             'user': item['user'],
             'time_epoch': self._get_time_epoch(item['tweet']),
             'tweet': self._get_tweet(item['tweet']),
-            'is_retweet': self._is_retweet(item['tweet']),
             'n_likes': self._get_n_likes(item['tweet']),
             'n_retweets': self._get_n_retweets(item['tweet']),
             'n_replies': self._get_n_replies(item['tweet']),
             'n_emojis': self._get_n_emojis(item['tweet']),
             'quoted_tweet': self._get_quoted_tweet(item['tweet']),
             'hashtags': self._get_hashtags(item['tweet']),
-            'mentions': self._get_mentions(item['tweet']),
-            'retweet_info': {
-                'screen_name': None,
-                'name': None
-            }
+            'mentions': self._get_mentions(item['tweet'])
         }
 
-        if data['is_retweet']:
-            data['retweet_info'] = self._get_retweet_info(item['tweet'])
-
         return data
-
-    def _is_retweet(self, tweet):
-        """Determines if a certain tweet is a retweet.
-
-        Check whether a tweet item contains the 'data-retweet-id' attribute.
-
-        Args:
-            tweet (scrapy.Selector): selector returned by item.
-
-        Returns:
-            bool: True if tweet is retweet otherwise False.
-        """
-
-        if tweet.css('::attr(data-retweet-id)').get():
-            return True
-        return False
 
     def _get_hashtags(self, tweet):
         """Finds all hashtags for a tweet.
@@ -280,20 +252,6 @@ class DataGatherPipeline:
         text = self._add_space_to_urls(text)
         return text
 
-    def _get_retweet_info(self, tweet):
-        """Gets retweet info.
-
-        Args:
-            tweet (scrapy.Selector): selector returned by item.
-
-        Returns:
-            dict: object which contains screen_name and name
-        """
-        return {
-            'screen_name': tweet.css('::attr(data-screen-name)').get(),
-            'name': tweet.css('::attr(data-name)').get(),
-        }
-
     def _add_space_to_urls(self, text):
         """Add spaces before each url in the text.
 
@@ -303,6 +261,7 @@ class DataGatherPipeline:
         Returns:
             str: tweet text in which spaces are added before each url.
         """
+        text = text.replace(u'\xa0', u' ')
         for rgx in self.REGEX:
             text = rgx.sub(r' \1', text)
         return text
