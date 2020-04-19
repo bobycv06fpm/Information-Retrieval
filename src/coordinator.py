@@ -19,7 +19,7 @@ class Coordinator:
     def __init__(self, path=None):
 
         if not path:
-            self.root = Path(__file__).resolve().parent
+            self.root = Path(__file__).parents[1]
         else:
             self.root = Path(path).resolve()
 
