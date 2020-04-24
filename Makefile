@@ -40,6 +40,9 @@ create_environment:
 # PROJECT RULES                                                                 #
 #################################################################################
 
+## Clean links and remain tweets with at least 50 characters
+basic_preprocess: data/raw/
+	$(PYTHON_INTERPRETER) $(PROJECT_DIR)/src/utils/preprocessing.py basic_preprocess
 
 
 #################################################################################
