@@ -27,6 +27,6 @@ Basic preprocessing class located in `src/utils/preprocessing.py` script.
 
 To do basic preprocessing run the following command:
 ```
-make basic_preprocessing
+make basic_preprocess
 ```
 It will create a preprocessed file in `data/interim` folder.
