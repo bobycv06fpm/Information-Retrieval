@@ -34,3 +34,7 @@ It will create a preprocessed file in `data/interim` folder.
 ## EDA
 
 Basic EDA is located in ``notebooks/002-EDA.ipynb``
+
+## Training
+
+Basic training examples (Logreg, SVC, KNN, LDA, KMeans) are located in `notebooks/003-Training.ipynb`
