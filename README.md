@@ -30,3 +30,7 @@ To do basic preprocessing run the following command:
 make basic_preprocess
 ```
 It will create a preprocessed file in `data/interim` folder.
+
+## EDA
+
+Basic EDA is located in ``notebooks/002-EDA.ipynb``
